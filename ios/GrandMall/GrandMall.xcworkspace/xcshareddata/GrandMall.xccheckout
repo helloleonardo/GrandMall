@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>DCE6A8B7-94F6-4431-9A3B-91B9AA8E487B</string>
+	<key>IDESourceControlProjectName</key>
+	<string>GrandMall</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>918A08EBEA1907C27D32D58237E3FC78AD2FA1FA</key>
+		<string>https://github.com/helloleonardo/GrandMall.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>ios/GrandMall/GrandMall.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>918A08EBEA1907C27D32D58237E3FC78AD2FA1FA</key>
+		<string>../../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/helloleonardo/GrandMall.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>918A08EBEA1907C27D32D58237E3FC78AD2FA1FA</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>918A08EBEA1907C27D32D58237E3FC78AD2FA1FA</string>
+			<key>IDESourceControlWCCName</key>
+			<string>GrandMall</string>
+		</dict>
+	</array>
+</dict>
+</plist>
