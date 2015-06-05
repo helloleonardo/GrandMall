@@ -21,7 +21,7 @@
     NSString* name=[NSString stringWithFormat:@"%@",[[API sharedInstance].selfInfo valueForKey:@"customer_name"]];
     name=[name stringByAppendingString:[NSString stringWithFormat:@"%@",[[API sharedInstance].selfInfo valueForKey:@"customer_gender"]]];
     self.textName.text=name;
-    self.textPhone.text=[[API sharedInstance].selfInfo valueForKey:@"customer_phone_number" ];
+    self.textPhone.text=[[API sharedInstance].selfInfo valueForKey:@"customer_phone" ];
 }
 
 - (void)didReceiveMemoryWarning {

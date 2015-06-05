@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "API.h"
 
-@interface controllerRegister : UIViewController<apiDelegate,UIPickerViewDataSource,UIPickerViewDelegate>
+@interface controllerRegister : UIViewController<apiDelegate,UIPickerViewDataSource,UIPickerViewDelegate,UITextViewDelegate>
 @property (weak, nonatomic) IBOutlet UITextField *textName;
 @property (weak, nonatomic) IBOutlet UITextField *textPhone;
 @property (weak, nonatomic) IBOutlet UITextField *textPwd;

@@ -48,7 +48,7 @@
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [API sharedInstance].nowQueueArray.count;
+    return [API sharedInstance].queueArray.count;
 }
 
 -(void)addQueueSuccess:(NSInteger)row

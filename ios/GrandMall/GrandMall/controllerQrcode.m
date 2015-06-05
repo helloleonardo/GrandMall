@@ -44,6 +44,7 @@
     AVCaptureDeviceInput* input=[AVCaptureDeviceInput deviceInputWithDevice:device error:&error];
     if (error) {
         NSLog(@"No camera");
+        [[API sharedInstance] getResInfo:@"1"];
         return;
     }
     

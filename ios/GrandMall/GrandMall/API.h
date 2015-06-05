@@ -21,7 +21,7 @@
 
 
 
-@interface API : NSObject
+@interface API : NSObject<NSXMLParserDelegate>
 
 @property(strong,nonatomic) NSMutableArray *mallInfo;
 @property(strong,nonatomic) NSMutableDictionary *selfInfo;
@@ -38,7 +38,7 @@
 
 + (API*) sharedInstance;
 -(int)getResInfo:(NSString *)mallId;
--(int)getResNoice:(NSString *)resId;
+-(int)getNotice:(NSString *)resId;
 -(int)getResMenu:(NSString *)resId;
 -(int)reg:(NSString* )phoneNumber :(NSString*)pwd :(NSString*)name :(NSString*)gender;
 -(int)login:(NSString* )phoneNumber :(NSString*)pwd;

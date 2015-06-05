@@ -83,10 +83,10 @@
                 initWithStyle:UITableViewCellStyleValue1
                 reuseIdentifier:TableSampleIdentifier];
     }
-    NSMutableArray* temp=mallInfo[indexPath.row];
-    cell.labelName.text=temp[3];
-    cell.labelInfo.text=temp[5];
-    NSString* tempURL=[NSString stringWithFormat:@"http://%@:9993/%@",[API sharedInstance].IP,temp[4]];
+    NSMutableDictionary* temp=mallInfo[indexPath.row];
+    cell.labelName.text=[temp objectForKey:@"busi_name"];
+    cell.labelInfo.text=[temp objectForKey:@"busi_intro"];
+    NSString* tempURL=[NSString stringWithFormat:@"http://%@/%@",[API sharedInstance].IP,[temp objectForKey:@"busi_pic"]];
     [cell.picRes setImageWithURL:[NSURL URLWithString:tempURL]];
     cell.row=indexPath.row;
     return cell;
@@ -126,7 +126,7 @@
 
 -(void)addOrder:(NSInteger)row
 {
-    NSString* resId=([API sharedInstance].mallInfo)[row][0];
+    NSString* resId=[[([API sharedInstance].mallInfo) objectAtIndex:row] objectForKey:@"busi_id"];
     [[API sharedInstance] getResMenu:resId];
     [API sharedInstance].resId=resId;
 }
@@ -135,8 +135,8 @@
     self.imgBack.hidden=true;
     self.viewBack.hidden=true;
     NSMutableDictionary* temp=([API sharedInstance].queueArray)[row];
-    NSMutableArray* temp2=mallInfo[number];
-    [temp setObject:temp2[3] forKey:@"name"];
+    NSMutableDictionary* temp2=mallInfo[number];
+    [temp setObject:[temp2 objectForKey:@"busi_id"] forKey:@"busi_id"];
 
 }
 
@@ -151,7 +151,7 @@
 
 
 - (IBAction)queueOk:(id)sender {
-    NSMutableArray* temp=mallInfo[number];
+    NSMutableDictionary* temp=mallInfo[number];
     NSString* type;
     if ([self.pickerTable selectedRowInComponent:0]==0) {
         type=@"2";
@@ -165,7 +165,7 @@
     else if ([self.pickerTable selectedRowInComponent:0]==3) {
         type=@"8";
     }
-    [[API sharedInstance] addQueue:[[API sharedInstance].selfInfo valueForKey:@"customer_id"] :temp[0] :type];
+    [[API sharedInstance] addQueue:[[API sharedInstance].selfInfo valueForKey:@"customer_id"] :[temp objectForKey:@"busi_id"] :type];
 }
 
 - (IBAction)queueCancel:(id)sender {

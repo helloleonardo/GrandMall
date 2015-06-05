@@ -103,7 +103,7 @@ static NSString * const reuseIdentifier = @"Cell";
         cell.imgSta.hidden=true;
         
     }
-    NSString* tempURL=[NSString stringWithFormat:@"http://%@:9993/%@",[API sharedInstance].IP,temp[4]];
+    NSString* tempURL=[NSString stringWithFormat:@"http://%@/%@",[API sharedInstance].IP,temp[4]];
     [cell.imgPic setImageWithURL:[NSURL URLWithString:tempURL]];
 
     cell.labelName.text=temp[1];
