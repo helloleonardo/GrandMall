@@ -23,13 +23,7 @@
     
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
-    self.viewPhoneTrue.hidden=true;
-    self.viewPwdTrue.hidden=true;
-    self.buttonLoginTrue.hidden=true;
-    [self.textPwd  setSecureTextEntry:YES];
-    self.buttonRegTrue.hidden=true;
-    [self.textPhone setValue:[UIColor grayColor] forKeyPath:@"_placeholderLabel.textColor"];
-    [self.textPwd setValue:[UIColor grayColor] forKeyPath:@"_placeholderLabel.textColor"];
+    
 }
 
 
@@ -40,6 +34,15 @@
 
 -(void)viewWillAppear:(BOOL)animated
 {
+    self.viewPhoneTrue.hidden=true;
+    self.viewPwdTrue.hidden=true;
+    self.buttonLoginTrue.hidden=true;
+    [self.textPwd  setSecureTextEntry:YES];
+    self.buttonRegTrue.hidden=true;
+    [self.textPhone setValue:[UIColor grayColor] forKeyPath:@"_placeholderLabel.textColor"];
+    [self.textPwd setValue:[UIColor grayColor] forKeyPath:@"_placeholderLabel.textColor"];
+    
+    
     [super viewWillAppear:animated];
     [NSThread sleepForTimeInterval:0.4];
     CABasicAnimation *animation=[CABasicAnimation animationWithKeyPath:@"transform.translation.y"];

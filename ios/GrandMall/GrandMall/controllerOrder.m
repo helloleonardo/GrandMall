@@ -12,10 +12,14 @@
 
 @interface controllerOrder ()
 {
-NSMutableArray* source;
+    NSMutableArray* source;
     NSMutableArray* cellArray;
     NSMutableArray* array;
+    BOOL isSort;
+    NSMutableArray* sourceSort;
 }
+@property (weak, nonatomic) IBOutlet UILabel *labelTitle;
+- (IBAction)sort:(id)sender;
 @end
 
 @implementation controllerOrder
@@ -23,6 +27,7 @@ NSMutableArray* source;
 static NSString * const reuseIdentifier = @"Cell";
 
 - (void)viewDidLoad {
+    isSort=false;
     [super viewDidLoad];
     array=[[NSMutableArray alloc] init];
     for (int i=0; i<[API sharedInstance].menu.count;i++ ) {
@@ -35,6 +40,8 @@ static NSString * const reuseIdentifier = @"Cell";
     [source addObject:@"4人桌"];
     [source addObject:@"6人桌"];
     [source addObject:@"8人桌"];
+    sourceSort=[[NSMutableArray alloc] init];
+    sourceSort=@[@"默认排列",@"按价格降序",@"按价格升序"];
     cellArray=[[NSMutableArray alloc] init];
     [API sharedInstance].delegate=self;
 }
@@ -46,7 +53,13 @@ static NSString * const reuseIdentifier = @"Cell";
 
 -(NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
 {
-    return [source count];
+    if (isSort) {
+        return [sourceSort count];
+    }
+    else
+    {
+        return [source count];
+    }
 }
 
 -(NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
@@ -56,7 +69,13 @@ static NSString * const reuseIdentifier = @"Cell";
 
 -(NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
 {
-    return [source objectAtIndex:row];
+    if (isSort) {
+        return [sourceSort objectAtIndex:row];
+    }
+    else
+    {
+        return [source objectAtIndex:row];
+    }
 }
 
 
@@ -134,40 +153,50 @@ static NSString * const reuseIdentifier = @"Cell";
 }
 
 - (IBAction)ok:(id)sender {
+    isSort=false;
+    [self.pickerTable reloadAllComponents];
+    self.labelTitle.text=@"请选择座位";
     self.viewBack.hidden=false;
     self.imgBack.hidden=false;
 }
 
 - (IBAction)sure:(id)sender {
-    NSString* type;
-    if ([self.pickerTable selectedRowInComponent:0]==0) {
-        type=@"2";
-    }
-    else if ([self.pickerTable selectedRowInComponent:0]==1) {
-        type=@"4";
-    }
-    else if ([self.pickerTable selectedRowInComponent:0]==2) {
-        type=@"6";
-    }
-    else if ([self.pickerTable selectedRowInComponent:0]==3) {
-        type=@"8";
-    }
-    NSString* temp=@"";
-    for (int i=0; i<cellArray.count-1; i++) {
-        CellOrder* cell=(CellOrder*)cellArray[i];
-        if ([array[i]isEqualToString:@"true"]) {
-            NSRange range=[temp rangeOfString:([API sharedInstance].menu)[i][0]];
-            if (range.location ==NSNotFound) {
-                if ([temp isEqualToString:@""]) {
-                    temp=[temp stringByAppendingString:[NSString stringWithFormat:@"%@", ([API sharedInstance].menu)[i][0]]];
-                }
-                else
-                    temp=[temp stringByAppendingString:[NSString stringWithFormat:@",%@", ([API sharedInstance].menu)[i][0]]];
-            }
-            
+    if(!isSort)
+    {
+        NSString* type;
+        if ([self.pickerTable selectedRowInComponent:0]==0) {
+            type=@"2";
         }
+        else if ([self.pickerTable selectedRowInComponent:0]==1) {
+            type=@"4";
+        }
+        else if ([self.pickerTable selectedRowInComponent:0]==2) {
+            type=@"6";
+        }
+        else if ([self.pickerTable selectedRowInComponent:0]==3) {
+            type=@"8";
+        }
+        NSString* temp=@"";
+        for (int i=0; i<[API sharedInstance].menu.count; i++) {
+    //        CellOrder* cell=(CellOrder*)cellArray[i];
+            if ([array[i]isEqualToString:@"true"]) {
+                NSRange range=[temp rangeOfString:([API sharedInstance].menu)[i][0]];
+                if (range.location ==NSNotFound) {
+                    if ([temp isEqualToString:@""]) {
+                        temp=[temp stringByAppendingString:[NSString stringWithFormat:@"%@", ([API sharedInstance].menu)[i][0]]];
+                    }
+                    else
+                        temp=[temp stringByAppendingString:[NSString stringWithFormat:@",%@", ([API sharedInstance].menu)[i][0]]];
+                }
+                
+            }
+        }
+        [[API sharedInstance] order:[[API sharedInstance].selfInfo valueForKey:@"customer_id"] :[API sharedInstance].resId :type :temp];
     }
-    [[API sharedInstance] order:[[API sharedInstance].selfInfo valueForKey:@"customer_id"] :[API sharedInstance].resId :type :temp];
+    else{
+        NSString* temp=[NSString stringWithFormat:@"%ld",(long)[self.pickerTable selectedRowInComponent:0]];
+        [[API sharedInstance] getResMenu:[API sharedInstance].resId :temp];
+    }
 
 }
 
@@ -179,17 +208,37 @@ static NSString * const reuseIdentifier = @"Cell";
 -(void)addQueueSuccess:(NSInteger)row{
     self.imgBack.hidden=true;
     self.viewBack.hidden=true;
-    NSMutableDictionary* temp=([API sharedInstance].queueArray)[row];
-    NSMutableArray* temp2=[[NSMutableArray alloc] init];
-    for (int i=0; i<[API sharedInstance].mallInfo.count; i++) {
-        NSMutableArray *j=[API sharedInstance].mallInfo[i];
-        if (j[0]==[API sharedInstance].resId) {
-            temp2=j;
-        }
-    }
-    [temp setObject:temp2[3] forKey:@"name"];
+//    NSMutableDictionary* temp=([API sharedInstance].queueArray)[row];
+//    NSMutableArray* temp2=[[NSMutableArray alloc] init];
+//    for (int i=0; i<[API sharedInstance].mallInfo.count; i++) {
+//        NSMutableArray *j=[API sharedInstance].mallInfo[i];
+//        if (j[0]==[API sharedInstance].resId) {
+//            temp2=j;
+//        }
+//    }
+//    [temp setObject:temp2[3] forKey:@"name"];
     [self dismissViewControllerAnimated:YES completion:nil];
     
 }
 
+-(void)getResInfoSuccess
+{
+    [self.table reloadData];
+    self.imgBack.hidden=true;
+    self.viewBack.hidden=true;
+}
+
+- (IBAction)sort:(id)sender {
+    isSort=true;
+    [self.pickerTable reloadAllComponents];
+    self.labelTitle.text=@"请选择排序方式";
+    self.imgBack.hidden=false;
+    self.viewBack.hidden=false;
+
+}
+
+-(void)getMenuSuccess
+{
+    [self.table reloadData];
+}
 @end

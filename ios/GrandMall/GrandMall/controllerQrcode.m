@@ -44,7 +44,7 @@
     AVCaptureDeviceInput* input=[AVCaptureDeviceInput deviceInputWithDevice:device error:&error];
     if (error) {
         NSLog(@"No camera");
-        [[API sharedInstance] getResInfo:@"1"];
+        [[API sharedInstance] getResInfo:@"1" :@"0" :@"0"];
         return;
     }
     
@@ -81,7 +81,7 @@
         NSString* temp=obj.stringValue;
         if([temp isEqual:@"1"])
         {
-            [[API sharedInstance] getResInfo:@"1"];
+            [[API sharedInstance] getResInfo:@"1" :@"0" :@"0"];
         }
         else
         {

@@ -17,7 +17,10 @@
     NSMutableArray* mallInfo;
     NSMutableArray* source;
     NSInteger number;
+    BOOL isSort;
+    NSMutableArray* sourceSort;
 }
+- (IBAction)sort:(id)sender;
 
 @end
 
@@ -29,6 +32,7 @@
     mallInfo=[[NSMutableArray alloc] init];
     mallInfo=[API sharedInstance].mallInfo;
     source=[[NSMutableArray alloc] init];
+    sourceSort=@[@"默认排列",@"按人均消费降序排列",@"按人均消费升序排列",@"显示一楼商店",@"显示二楼商店",@"显示三楼商店",@"显示四楼商店"];
     [source addObject:@"2人桌"];
     [source addObject:@"4人桌"];
     [source addObject:@"6人桌"];
@@ -89,6 +93,7 @@
     NSString* tempURL=[NSString stringWithFormat:@"http://%@/%@",[API sharedInstance].IP,[temp objectForKey:@"busi_pic"]];
     [cell.picRes setImageWithURL:[NSURL URLWithString:tempURL]];
     cell.row=indexPath.row;
+    cell.labelCost=[temp valueForKey:@"busi_avgCost"];
     return cell;
 }
 
@@ -103,7 +108,13 @@
 
 -(NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
 {
-    return [source count];
+    if (isSort) {
+        return [sourceSort count];
+    }
+    else
+    {
+        return [source count];
+    }
 }
 
 -(NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
@@ -113,12 +124,21 @@
 
 -(NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
 {
-    return [source objectAtIndex:row];
+    if (isSort) {
+        return [sourceSort objectAtIndex:row];
+    }
+    else
+    {
+        return [source objectAtIndex:row];
+    }
 }
 
 
 -(void)addQueue:(NSInteger)row
 {
+    isSort=false;
+    [self.pickerTable reloadAllComponents];
+    self.labelTitle.text=@"请选择座位";
     self.imgBack.hidden=false;
     self.viewBack.hidden=false;
     number=row;
@@ -127,7 +147,7 @@
 -(void)addOrder:(NSInteger)row
 {
     NSString* resId=[[([API sharedInstance].mallInfo) objectAtIndex:row] objectForKey:@"busi_id"];
-    [[API sharedInstance] getResMenu:resId];
+    [[API sharedInstance] getResMenu:resId :@"0"];
     [API sharedInstance].resId=resId;
 }
 
@@ -151,21 +171,39 @@
 
 
 - (IBAction)queueOk:(id)sender {
-    NSMutableDictionary* temp=mallInfo[number];
-    NSString* type;
-    if ([self.pickerTable selectedRowInComponent:0]==0) {
-        type=@"2";
+    if(!isSort)
+    {
+        NSMutableDictionary* temp=mallInfo[number];
+        NSString* type;
+        if ([self.pickerTable selectedRowInComponent:0]==0) {
+            type=@"2";
+        }
+        else if ([self.pickerTable selectedRowInComponent:0]==1) {
+            type=@"4";
+        }
+        else if ([self.pickerTable selectedRowInComponent:0]==2) {
+            type=@"6";
+        }
+        else if ([self.pickerTable selectedRowInComponent:0]==3) {
+            type=@"8";
+        }
+        [[API sharedInstance] addQueue:[[API sharedInstance].selfInfo valueForKey:@"customer_id"] :[temp objectForKey:@"busi_id"] :type];
     }
-    else if ([self.pickerTable selectedRowInComponent:0]==1) {
-        type=@"4";
+    else
+    {
+        NSString* temp1;
+        NSString* temp2;;
+        if ([self.pickerTable selectedRowInComponent:0]<3) {
+            temp1=@"0";
+            temp2=[NSString stringWithFormat:@"%ld",(long)[self.pickerTable selectedRowInComponent:0]];
+        }
+        else
+        {
+            temp1=@"1";
+            temp2=[NSString stringWithFormat:@"%ld",(long)([self.pickerTable selectedRowInComponent:0]-2)];
+        }
+        [[API sharedInstance] getResInfo:@"1" :temp1 :temp2];
     }
-    else if ([self.pickerTable selectedRowInComponent:0]==2) {
-        type=@"6";
-    }
-    else if ([self.pickerTable selectedRowInComponent:0]==3) {
-        type=@"8";
-    }
-    [[API sharedInstance] addQueue:[[API sharedInstance].selfInfo valueForKey:@"customer_id"] :[temp objectForKey:@"busi_id"] :type];
 }
 
 - (IBAction)queueCancel:(id)sender {
@@ -174,4 +212,19 @@
 }
 
 
+- (IBAction)sort:(id)sender {
+    isSort=true;
+    [self.pickerTable reloadAllComponents];
+    self.labelTitle.text=@"请选择排序方式";
+    self.imgBack.hidden=false;
+    self.viewBack.hidden=false;
+}
+
+-(void)getResInfoSuccess
+{
+    mallInfo=[API sharedInstance].mallInfo;
+    [self.tableViewMain reloadData];
+    self.imgBack.hidden=true;
+    self.viewBack.hidden=true;
+}
 @end

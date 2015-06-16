@@ -29,6 +29,7 @@
 {
     [super viewWillAppear:animated];
     [API sharedInstance].delegate=self;
+    [[API sharedInstance] getQueue:[[API sharedInstance].selfInfo valueForKey:@"customer_id"]];
 }
 
 /*
@@ -43,7 +44,8 @@
 
 
 - (IBAction)buttonRefresh:(id)sender {
-    [[API sharedInstance] searchQueue:[API sharedInstance].cus];
+    [[API sharedInstance] getQueue:[[API sharedInstance].selfInfo valueForKey:@"customer_id"]];
+
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -70,39 +72,37 @@
                 reuseIdentifier:TableSampleIdentifier];
     }
     
-    NSMutableDictionary* tempnow=([API sharedInstance].nowQueueArray)[indexPath.row];
-    NSLog(@"1...%@",tempnow);
     NSMutableDictionary* temp=([API sharedInstance].queueArray)[indexPath.row];
     NSLog(@"2...%@",temp);
-    NSString* resid=[temp valueForKey:@"res_id"];
-    NSMutableArray* res=[[NSMutableArray alloc] init];
+    NSString* resName=[temp valueForKey:@"busi_name"];
+    NSMutableDictionary* res=[[NSMutableDictionary alloc] init];
     NSMutableArray* mall=[API sharedInstance].mallInfo;
     for (int i=0; i<mall.count; i++) {
-        NSString* a=[NSString stringWithFormat:@"%@",mall[i][0]];
-        if([a isEqualToString:resid])
+        NSString* a=[NSString stringWithFormat:@"%@",[mall[i] valueForKey:@"busi_name"]];
+        if([a isEqualToString:resName])
             res=mall[i];
     }
-    cell.labelName.text=[temp valueForKey:@"name"];
+    cell.labelName.text=[temp valueForKey:@"busi_name"];
     
     NSString* type;
-    if ([[tempnow valueForKey:@"table_type"] intValue]==2) {
+    if ([[temp valueForKey:@"table_type"] intValue]==2) {
         type=@"A";
     }
-    else if ([[tempnow valueForKey:@"table_type"] intValue]==4) {
+    else if ([[temp valueForKey:@"table_type"] intValue]==4) {
         type=@"B";
     }
-    else if ([[tempnow valueForKey:@"table_type"] intValue]==6) {
+    else if ([[temp valueForKey:@"table_type"] intValue]==6) {
         type=@"C";
     }
-    else if ([[tempnow valueForKey:@"table_type"] intValue]==8) {
+    else if ([[temp valueForKey:@"table_type"] intValue]==8) {
         type=@"D";
     }
-    cell.labelNumber.text=[NSString stringWithFormat:@"%@%@",type,[temp valueForKey:@"max"] ];
-    int num=[[tempnow valueForKey:@"min"] intValue]-[[temp valueForKey:@"min"] intValue];
-    int people=[[temp valueForKey:@"max"] intValue]-[[tempnow valueForKey:@"min"] intValue];
+    cell.labelNumber.text=[NSString stringWithFormat:@"%@%@",type,[temp valueForKey:@"queue_id"] ];
+    int people=[[temp valueForKey:@"queue_startNumber"] intValue]-[[temp valueForKey:@"queue_nowNumber"] intValue];
+    int num=[[temp valueForKey:@"queue_nowNumber"] intValue];
     NSString* mes;
     
-    NSString* startString=[temp valueForKey:@"wait_time"];
+    NSString* startString=[temp valueForKey:@"queue_time"];
     startString=[startString substringFromIndex:11];
     NSInteger startHour=[[startString substringToIndex:2] intValue];
     startString=[startString substringFromIndex:3];
@@ -117,38 +117,40 @@
     NSDateComponents *comps  = [calendar components:unitFlags fromDate:now];
     NSInteger hour=[comps hour];
     NSInteger minute=[comps minute];
-    if ([[temp valueForKey:@"max"] isEqualToString:@"1"]) {
+    if (num==1) {
         mes=@"您为当前第一位，请立即赶往餐厅。";
     }
-    else if(num<5)
+    else if(people<2)
     {
         NSString* time;
         if ([[temp valueForKey:@"table_type"] isEqual:@"2"]) {
-            time=res[15];
+            time=[res valueForKey:@"table_type_2_wait"];
         }
         else if ([[temp valueForKey:@"table_type"] isEqual:@"4"]) {
-            time=res[16];
+            time=[res valueForKey:@"table_type_4_wait"];
         }
         else if ([[temp valueForKey:@"table_type"] isEqual:@"6"]) {
-            time=res[17];
+            time=[res valueForKey:@"table_type_6_wait"];
         }
         else if ([[temp valueForKey:@"table_type"] isEqual:@"8"]) {
-            time=res[18];
+            time=[res valueForKey:@"table_type_8_wait"];
         }
-        NSInteger pos=people*[time intValue];
-        
-        pos=pos-(hour*60+minute-startHour*60-startMinute);
+        NSInteger pos=num*[time intValue];
         mes=[NSString stringWithFormat:@"%ld分钟",(long)pos];
     
     }
     else
     {
-        int v=(hour*60+minute-startHour*60-startMinute)/num;
-        int number=[[tempnow valueForKey:@"max"] intValue]-[[temp valueForKey:@"min"] intValue];
-        mes=[NSString stringWithFormat:@"%d分钟",v*number];
+        double v=(hour*60+minute-startHour*60-startMinute)/(double)people;
+        int number=v*num;
+        if (number==0) {
+            number=1;
+        }
+        mes=[NSString stringWithFormat:@"%d分钟",number];
 
     }
     cell.labelTime.text=mes;
+    cell.labelPosition.text=[NSString stringWithFormat:@"第%d位",[[temp valueForKey:@"queue_nowNumber"] intValue]];
     
     return cell;
     

@@ -20,14 +20,14 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    NSMutableArray* temp=([API sharedInstance].mallInfo)[[API sharedInstance].row];
-    NSString* tempURL=[NSString stringWithFormat:@"http://%@:9993/%@",[API sharedInstance].IP,temp[4]];
+    NSMutableDictionary* temp=([API sharedInstance].mallInfo)[[API sharedInstance].row];
+    NSString* tempURL=[NSString stringWithFormat:@"http://%@/%@",[API sharedInstance].IP,[temp valueForKey:@"busi_pic"]];
     [self.img setImageWithURL:[NSURL URLWithString:tempURL]];
-    self.name.text=temp[3];
-    self.phone.text=temp[5];
-    self.info.text=temp[7];
-    self.avg.text=temp[8];
-    self.lowest.text=temp[9];
+    self.name.text=[temp valueForKey:@"busi_name"];
+    self.phone.text=[temp valueForKey:@"busi_tel"];
+    self.info.text=[temp valueForKey:@"busi_intro"];
+    self.avg.text=[temp valueForKey:@"busi_avgCost"];
+    self.lowest.text=[temp valueForKey:@"busi_minCost"];
 }
 
 - (void)didReceiveMemoryWarning {

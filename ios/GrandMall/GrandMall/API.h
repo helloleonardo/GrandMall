@@ -37,14 +37,15 @@
 @property(nonatomic) BOOL isLogin;
 
 + (API*) sharedInstance;
--(int)getResInfo:(NSString *)mallId;
+-(int)getResInfo:(NSString *)mallId :(NSString *)sortType :(NSString*)sort;
 -(int)getNotice:(NSString *)resId;
--(int)getResMenu:(NSString *)resId;
+-(int)getResMenu:(NSString *)resId :(NSString*)sortType;
 -(int)reg:(NSString* )phoneNumber :(NSString*)pwd :(NSString*)name :(NSString*)gender;
 -(int)login:(NSString* )phoneNumber :(NSString*)pwd;
 -(int)addQueue:(NSString*)cusId :(NSString*)resId :(NSString*)type;
 -(int)order:(NSString*)cusId :(NSString*)resId :(NSString*)type :(NSString*)menu;
--(int)searchQueue:(NSString*)cusId;
+-(int)searchQueue:(NSString*)queueId;
+-(int)getQueue:(NSString*)cusId;
 
 @property(nonatomic,assign) id<apiDelegate> delegate;
 @end

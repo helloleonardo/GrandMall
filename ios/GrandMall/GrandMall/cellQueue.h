@@ -20,6 +20,7 @@
 @property (weak, nonatomic) IBOutlet UIImageView *picRes;
 @property (weak, nonatomic) IBOutlet UILabel *labelName;
 @property (weak, nonatomic) IBOutlet UILabel *labelInfo;
+@property (weak, nonatomic) IBOutlet UILabel *labelCost;
 @property NSInteger row;
 - (IBAction)queue:(id)sender;
 - (IBAction)order:(id)sender;

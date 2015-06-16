@@ -16,6 +16,7 @@
 @property (weak, nonatomic) IBOutlet UIImageView *imgBack;
 @property (weak, nonatomic) IBOutlet UIView *viewBack;
 @property (weak, nonatomic) IBOutlet UIPickerView *pickerTable;
+@property (weak, nonatomic) IBOutlet UILabel *labelTitle;
 - (IBAction)queueOk:(id)sender;
 - (IBAction)queueCancel:(id)sender;
 
