@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "API.h"
 
-@interface controllerLogin : UITableViewController<apiDelegate>
+@interface controllerLogin : UITableViewController<apiDelegate,UITextFieldDelegate>
 @property (weak, nonatomic) IBOutlet UIImageView *imgLogo;
 @property (weak, nonatomic) IBOutlet UIView *viewPhone;
 @property (weak, nonatomic) IBOutlet UIView *viewPwd;

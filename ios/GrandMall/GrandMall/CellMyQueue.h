@@ -13,5 +13,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *labelNumber;
 @property (weak, nonatomic) IBOutlet UILabel *labelTime;
 @property (weak, nonatomic) IBOutlet UILabel *labelPosition;
+@property (weak, nonatomic) IBOutlet UILabel *static1;
 
 @end

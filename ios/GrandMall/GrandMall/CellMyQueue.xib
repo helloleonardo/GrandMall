@@ -71,7 +71,7 @@
                 <outlet property="labelNumber" destination="yKE-HL-fxk" id="ciF-ZH-1uU"/>
                 <outlet property="labelPosition" destination="ktr-At-iam" id="ZLh-BF-wLK"/>
                 <outlet property="labelTime" destination="RaL-aE-4Mk" id="x6Y-Pn-E4l"/>
-                <outlet property="static1" destination="uA1-1i-Pv5" id="Ecv-0K-WZi"/>
+                <outlet property="static1" destination="uA1-1i-Pv5" id="SPD-ah-Hlc"/>
             </connections>
             <point key="canvasLocation" x="156" y="294.5"/>
         </tableViewCell>

@@ -97,13 +97,13 @@
     else if ([[temp valueForKey:@"table_type"] intValue]==8) {
         type=@"D";
     }
-    cell.labelNumber.text=[NSString stringWithFormat:@"%@%@",type,[temp valueForKey:@"queue_id"] ];
+    cell.labelNumber.text=[NSString stringWithFormat:@"%@%@",type,[temp valueForKey:@"queue_order"]];
     int people=[[temp valueForKey:@"queue_startNumber"] intValue]-[[temp valueForKey:@"queue_nowNumber"] intValue];
     int num=[[temp valueForKey:@"queue_nowNumber"] intValue];
     NSString* mes;
     
     NSString* startString=[temp valueForKey:@"queue_time"];
-    startString=[startString substringFromIndex:11];
+    startString=[startString substringFromIndex:10];
     NSInteger startHour=[[startString substringToIndex:2] intValue];
     startString=[startString substringFromIndex:3];
     NSInteger startMinute=[[startString substringToIndex:2] intValue];
@@ -151,6 +151,7 @@
     }
     cell.labelTime.text=mes;
     cell.labelPosition.text=[NSString stringWithFormat:@"第%d位",[[temp valueForKey:@"queue_nowNumber"] intValue]];
+    cell.static1.hidden=false;
     
     return cell;
     

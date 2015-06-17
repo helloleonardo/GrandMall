@@ -104,5 +104,28 @@
 
 }
 
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    [super touchesBegan:touches withEvent:event];
+    [self.textPhone resignFirstResponder];
+    [self.textPwd resignFirstResponder];
+}
+
+-(void)textFieldDidEndEditing:(UITextField *)textField
+{
+    [self.textPhone resignFirstResponder];
+    [self.textPwd resignFirstResponder];
+
+}
+
+-(BOOL)textFieldShouldEndEditing:(UITextField *)textField
+{
+    return true;
+}
+
+-(BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    return true;
+}
 
 @end

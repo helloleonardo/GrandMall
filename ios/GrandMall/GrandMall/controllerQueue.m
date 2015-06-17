@@ -93,7 +93,7 @@
     NSString* tempURL=[NSString stringWithFormat:@"http://%@/%@",[API sharedInstance].IP,[temp objectForKey:@"busi_pic"]];
     [cell.picRes setImageWithURL:[NSURL URLWithString:tempURL]];
     cell.row=indexPath.row;
-    cell.labelCost=[temp valueForKey:@"busi_avgCost"];
+    cell.labelCost.text=[[temp valueForKey:@"busi_avgCost"] stringByAppendingString:@"元"];
     return cell;
 }
 

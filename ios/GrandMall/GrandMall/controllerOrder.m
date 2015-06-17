@@ -126,7 +126,7 @@ static NSString * const reuseIdentifier = @"Cell";
     [cell.imgPic setImageWithURL:[NSURL URLWithString:tempURL]];
 
     cell.labelName.text=temp[1];
-    cell.labelPrice.text=temp[2];
+    cell.labelPrice.text=[temp[2] stringByAppendingString:@"元"];
     [cellArray addObject:cell];
 
     return cell;
